@@ -125,17 +125,20 @@
 
 
 
-
-<label for="inputPistas" id="labelInputPistas">Buscar Palabras En El Diccionario</label>
-<span style="float:right;">
-    <label id="pistasRestantes">Pistas 3</label>
-</span><br><br><br>
-<input type="text" id="inputPistas" oninput="this.value = this.value.toUpperCase()" onclick="borrarListaPistas()">
-<input type="submit" class="Boton" id="botonBuscar" value="Buscar" onclick="mirarSiVacio()">
+<input type="submit" class="Boton1" id="botonComprobar" value="Comprobar Pasatiempo" onclick="comprobarPasatiempo()">
 <input type="submit" class="Boton1" id="botonLimpiar" value="Limpiar Tablero" onclick="limpiarTablero()">
 <input type="submit" class="Boton1" id="botonLimpiar" value="Borrar Alm. Local" onclick="confirmacionBorrado()"><br><br>
 
 
+
+<label for="inputPistas" id="labelInputPistas">Buscar Palabras En El Diccionario</label>
+
+<span style="float:right;">
+    <label id="pistasRestantes">Pistas 3</label>
+</span><br><br><br>
+
+<input type="text" id="inputPistas" oninput="this.value = this.value.toUpperCase()" onclick="borrarListaPistas()">
+<input type="submit" class="Boton" id="botonBuscar" value="Buscar" onclick="mirarSiVacio()">
 
 
 
@@ -143,12 +146,16 @@
 </div>
 
 
+
 <div id="somosLasCookies">
     <span id="equisDeCierre" onclick="this.parentElement.style.display='none';">&times;</span> <!--&times; es la x en unicode-->
-    <strong>Info!</strong> El sitio web permite almacenar una resolución parcial mediante el autoguardado de estado ¿Consiente?<br><br>
+    <strong>Info!</strong> El sitio web permite almacenar una resolución parcial mediante el autoguardado de estado ¿Consiente?
+    (Tenga en cuenta que la función empezará a grabar en el momento en que acepte y haga cambios, no antes) <br><br>
     <input type="submit" class="Boton" value="Acepto" onclick="permitirAlmacenLocal();this.parentElement.style.display='none';"> <!--ademas de permitirlo, que cierre el dialogo-->
     <input type="submit" class="Boton" value="No, gracias" onclick="this.parentElement.style.display='none';"> <!--El codigo del onclick es el mismo de la 'x' sirve para cerrar el mensaje--> 
 </div>
+
+
 
 
 

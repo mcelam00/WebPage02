@@ -1,8 +1,25 @@
+
+
+    /**FUNCIONES INICIALES: A LA CARGA DE LA PÁGINA**/
+
+
+function limpiarPagina(){
+   
+    limpiarTablero();
+    document.getElementById("inputPistas").value = ""; //limpio el cuadro de busqueda de palabras 
+
+}
+
+function limpiarTablero(){
+    document.getElementById("tablaJuego").reset(); //limpia el tablero completo
+}
+
 function cargarDiccionario(){
     
     //Crea un nuevo objeto XMLHttpRequest
 var xhr = new XMLHttpRequest();
 var url = 'https://ordenalfabetix.unileon.es/aw/diccionario.txt';
+
     
 
 //Esto se llamará después de que la respuesta se reciba
@@ -80,6 +97,71 @@ diccionario = [];
     //ya tenemos procesado y guardado el diccionario con las palabras que nos interesan para el juego solamente (agrupadas las de cuatro primero y luego las de seis)
     
 }
+
+
+
+
+
+
+
+
+
+
+    /**FUNCION MUESTRA TABLERO (LO CARGA) DEL ALMACENAMIENTO LOCAL**/
+
+
+function existePasatiempoGuardado(){
+    
+    if(localStorage.getItem("pasatiempo1") != null){ //si es null, es que no se ha guardado ninguna solucion parcial
+        
+        //si es disinto a null pregunto si se quiere cargar el contenido
+    
+        respuesta = confirm("Se ha detectado una resolución parcial anterior ¿Desea recuperarla ó deshecharla?");
+        
+        if(respuesta == true){ //si dice que si se carga
+    
+            mostrarPasatiempoGuardado();
+    
+        }else{ 
+             //si no quiere recuperarlo se borra
+             borrarAlmLocal()
+        }
+    }
+}
+
+function mostrarPasatiempoGuardado(){
+    
+    //cargo los valores guardados en las celdas del tablero
+
+    tablero = localStorage.getItem("pasatiempo1");
+
+
+    
+    formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
+
+        for(i = 0 ; i < formulario.length ; i++){
+            input = formulario.item(i); //cojo cada input del formulario
+            if(tablero[i]!="*"){
+                input.value = tablero[i];
+            }
+        }
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    /**FUNCIONES JUEGO: COMPRUEBAN SI LA PALABRA COMPLETADA ESTÁ EN EL DICCIONARIO**/
+
 
 function comprobarPalabra(IDCeldaPierdeFoco){
         
@@ -217,7 +299,7 @@ function comprobarPalabra(IDCeldaPierdeFoco){
 
 
 }
-
+/* OPCION CON BUSQUEDA BINARIA
 function existeEnDiccionario(palabra){
     
     min = 0;
@@ -236,6 +318,8 @@ function existeEnDiccionario(palabra){
             while(encontrada === false && min <= max){ //=== igual en tipo y valor
 
                 media = Math.floor((min + max) / 2);
+                console.log(media)
+                console.log(diccionario[media])
 
                 if(diccionario[media].localeCompare(palabra) == 0 ){
                     //son iguales
@@ -283,8 +367,9 @@ function existeEnDiccionario(palabra){
     return encontrada;
 
 }
+*/
 
-/* OPCION SIN BUSQUEDA BINARIA
+/* OPCION SIN BUSQUEDA BINARIA*/
 function existeEnDiccionario(palabra){
     //en funcion de la longitud de la palabra introducida buscaremos entre las de esa longitud solamente
     //como las de 4 estan al ppio y las de 6 al final. Si es de 4 voy de 0 incrementando y si es de 6 empiezo por el final y voy hacia atras
@@ -295,7 +380,7 @@ function existeEnDiccionario(palabra){
 
         while(diccionario[pos].length == 4){//mientras la palabra por la que voy del diccionario siga siendo de 4
 
-            if(diccionario[pos] == palabra){ // si se encuentra 
+            if(diccionario[pos].localeCompare(palabra) == 0){ // si se encuentra 
                 testigo = true;
                 break;
             }
@@ -310,7 +395,7 @@ function existeEnDiccionario(palabra){
 
         while(diccionario[pos].length == 6){//mientras la palabra por la que voy del diccionario siga siendo de 6
 
-            if(diccionario[pos] == palabra){ // si se encuentra 
+            if(diccionario[pos].localeCompare(palabra) == 0){ // si se encuentra 
                 testigo = true;
                 break;
             }
@@ -325,7 +410,36 @@ function existeEnDiccionario(palabra){
 
     return testigo;
 }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+    /**FUNCIONES AYUDA AL JUEGO: ENCARGADAS DE MOSTRAR LA LISTA DE PALABRAS DEL DICCIONARIO QUE CUADRAN CON LAS LETRAS QUE SE BUSCAN**/
+
+
+function mirarSiVacio(){
+
+    if(document.getElementById("inputPistas").value == ""){
+        alert("Puede introducir una secuencia de 4 ó 6 letras en el campo adyacente y obtener una lista de opciones de palabras presentes en el diccionario cargado, con exactamente esas letras");
+    }else{
+        //Si el usuario ha escrito algo en el campo, se borra la lista anterior y se busca lo nuevo escrito
+        borrarListaPistas();
+        buscarPistas();
+    }
+
+}
+
+function borrarListaPistas(){
+    document.getElementById("pistasLista").innerHTML = ""; //borro las pistas anteriores
+}
 
 function buscarPistas(){
 
@@ -383,12 +497,7 @@ function buscarPistas(){
                 }
 
 
-                /*if(diccionario[pos].includes(letras[0]) && diccionario[pos].includes(letras[1]) && diccionario[pos].includes(letras[2]) && diccionario[pos].includes(letras[3]) && diccionario[pos].includes(letras[4]) && diccionario[pos].includes(letras[5])){  */
-
-                    /*if(letras.includes(diccionario[pos][0]) && letras.includes(diccionario[pos][1]) && letras.includes(diccionario[pos][2]) && letras.includes(diccionario[pos][3]) && letras.includes(diccionario[pos][4]) && letras.includes(diccionario[pos][5])){  */
-                      //miro que la ocurrencia de cada letra es justo exactamente 1 en la palabra (para que sea exactamente el mismo numero de cada letra). El || [] es porque si son 0 da null y null con lenght es puntero nulo.
-                
-                //}
+               
 
             }
             pos--;
@@ -434,21 +543,15 @@ function mostrarPistas(listaPistas){
 
 }
 
-function borrarListaPistas(){
-    document.getElementById("pistasLista").innerHTML = ""; //borro las pistas anteriores
-}
 
-function mirarSiVacio(){
 
-    if(document.getElementById("inputPistas").value == ""){
-        alert("Puede introducir una secuencia de 4 ó 6 letras en el campo adyacente y obtener una lista de opciones de palabras presentes en el diccionario cargado, con exactamente esas letras");
-    }else{
-        //Si el usuario ha escrito algo en el campo, se borra la lista anterior y se busca lo nuevo escrito
-        borrarListaPistas();
-        buscarPistas();
-    }
 
-}
+
+
+
+
+    /**FUNCIONES ALMACENAMIENTO LOCAL: COMPRUEBA SI SE HA ACTIVADO Y SI SI, GUARDA EL TABLERO COMPLETO**/
+
 
 function autoguardarCelda(Id){
     //Lo primero comprobaremos si se ha permitido el almacenamiento local para guardar la resolucion parcial, sino, salgo igual que entré
@@ -482,60 +585,17 @@ function permitirAlmacenLocal(){
     
 }
 
-function existePasatiempoGuardado(){
-    
-    if(localStorage.getItem("pasatiempo1") != null){ //si es null, es que no se ha guardado ninguna solucion parcial
-        
-        //si es disinto a null pregunto si se quiere cargar el contenido
-    
-        respuesta = confirm("Se ha detectado una resolución parcial anterior ¿Desea recuperarla ó deshecharla?");
-        
-        if(respuesta == true){ //si dice que si se carga
-    
-            mostrarPasatiempoGuardado();
-    
-        }else{ 
-             //si no quiere recuperarlo se borra
-             borrarAlmLocal()
-        }
-    }
-}
-
-function mostrarPasatiempoGuardado(){
-    
-    //cargo los valores guardados en las celdas del tablero
-
-    tablero = localStorage.getItem("pasatiempo1");
 
 
-    
-    formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
 
-        for(i = 0 ; i < formulario.length ; i++){
-            input = formulario.item(i); //cojo cada input del formulario
-            if(tablero[i]!="*"){
-                input.value = tablero[i];
-            }
-        }
-    
 
-}
 
-function limpiarPagina(){
-   
-    limpiarTablero();
-    document.getElementById("inputPistas").value = ""; //limpio el cuadro de busqueda de palabras 
 
-}
 
-/*AUXILIARES*/
-function limpiarTablero(){
-    document.getElementById("tablaJuego").reset(); //limpia el tablero completo
-}
 
-function borrarAlmLocal(){
-    localStorage.clear();
-}
+
+    /**FUNCION BORRADO DE ALMACENAMIENTO LOCAL**/
+
 
 function confirmacionBorrado(){
 
@@ -551,6 +611,17 @@ function confirmacionBorrado(){
     }
 
 }
+
+function borrarAlmLocal(){
+    localStorage.clear();
+}
+
+
+
+
+
+
+
 
 
 /*FUNCIONALIDAD EXTRA: METER PALABRAS QUE FALTAN AL DICCIONARIO*/
@@ -608,33 +679,291 @@ function meterPalabraEnDiccionario(palabra, arrayPalsDeEsaLong){
 
 
 }
-/*FUNCIONALIDAD EXTRA: COMPROBAR LAS DEFINICIONES -> NOTA: ASIGNAR A BOTON ON CLICK*/
+
+/*FUNCIONALIDAD EXTRA COMPROBAR PASATIEMPO -> NOTA: ASIGNAR A BOTON ON CLICK */
+function comprobarPasatiempo(){
+
+
+    //recorro el form como ya se y voy sacando las lineas y pasandoselas al metodo que me comprueba si la palabra esta en el diccionario
+    contador = 0;
+    str = "";
+
+    formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
+
+        for(i = 0 ; i < 25; i++){ //recorro las palabras de 4 Y LAS CHECKEO CON EL DICCIONARIO
+           
+            input = formulario.item(i); //cojo cada input del formulario (cada celda)
+
+            str = str + input.value;
+            contador++;
+
+            if(contador == 4){ //ya tenemos una palabra
+                if(existeEnDiccionario(str.toLowerCase()) == false){ //si alguna palabra no esta en el diccionario
+
+                    pistasCorrectas = comprobarPistas();
+                    solsIntermCorrectas = comprobarSolsIntermedias();
+
+                    if(pistasCorrectas && solsIntermCorrectas){ //las dos son true
+                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
+                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(pistasCorrectas == false){ //una es falsa
+                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(solsIntermCorrectas == false){ //la otra es falsa
+                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }
+                    return;
+                }
+
+                str = ""; //limpio la palabra porque ya la validé con el diccionario
+                contador = 0;
+            }
+        }
+
+
+
+        for(i = 25 ; i < 60; i++){ //recorro las palabras de 6 CHECKEO CON EL DICCIONARIO
+           
+            input = formulario.item(i); //cojo cada input del formulario (cada celda)
+
+            str = str + input.value;
+            contador++;
+
+            if(contador == 6){ //ya tenemos una palabra
+                if(existeEnDiccionario(str.toLowerCase()) == false){ //si alguna palabra no esta en el diccionario
+
+                    pistasCorrectas = comprobarPistas();
+                    solsIntermCorrectas = comprobarSolsIntermedias();
+
+                    if(pistasCorrectas && solsIntermCorrectas){ //las dos son true
+                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
+                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(pistasCorrectas == false){ //una es falsa
+                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                    }else if(solsIntermCorrectas == false){ //la otra es falsa
+                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
+                        console.log("aaaaaaaaaaaa");
+                    }
+                    return;
+                }
+
+                str = ""; //limpio la palabra porque ya la validé con el diccionario
+                contador = 0;
+
+            }
+        }
+    
+    //CAMINO DE ÉXITO (todas las palabras estaban en el diccionario):
+    pistasCorrectas = comprobarPistas();
+    solsIntermCorrectas = comprobarSolsIntermedias();
+    if(pistasCorrectas && solsIntermCorrectas){
+        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
+        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+    
+    }else if(pistasCorrectas == false){
+        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+
+    }else if(solsIntermCorrectas == false){
+        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+
+    }
+
+
+
+}
+
+
+/*FUNCIONALIDAD EXTRA: COMPROBAR LAS DEFINICIONES*/
 function comprobarPistas(){
     //verifica que las palabras introducidas en las pistas corresponden con las definiciones dadas
     pistasBuenas = ["CLAN","PENA","REMATO","TORERO"];
+
+    error = "Pistas Incorrectas: ";
 
     pista1 = document.getElementById("a1").value + document.getElementById("b1").value + document.getElementById("c1").value + document.getElementById("d1").value;
     pista2 = document.getElementById("a6").value + document.getElementById("b6").value + document.getElementById("c6").value + document.getElementById("d6").value;
     pista3 = document.getElementById("a7").value + document.getElementById("b7").value + document.getElementById("c7").value + document.getElementById("d7").value + document.getElementById("e7").value + document.getElementById("f7").value;
     pista4 = document.getElementById("a12").value + document.getElementById("b12").value + document.getElementById("c12").value + document.getElementById("d12").value + document.getElementById("e12").value + document.getElementById("f12").value;
 
-    if(pista1 != pistasBuenas[0]){
-        alert("La pista 1 no es correcta");
+    if(pista1 != pistasBuenas[0]){  //voy concatenando un mensaje donde indico las pistas erroneas
+        error = error + "1 ";
     }
     if(pista2 != pistasBuenas[1]){
-        alert("La pista 2 no es correcta");
+        error = error + "2 ";
     }
     if(pista3 != pistasBuenas[2]){
-        alert("La pista 3 no es correcta");
+        error = error + "3 ";
+
     }
     if(pista4 != pistasBuenas[3]){
-        alert("La pista 4 no es correcta");
+        error = error + "4 ";
+
     }
 
+    if(error.length != 20){
+       alert(error);
+    }
+
+    if(error.length == 20){
+        //Las cuatro pistas son correctas
+        return true;
+    }else{
+        return false;
+    }
 
 
 
 }
+
+/*FUNCIONALIDAD EXTRA: COMPROBAR PALABRAS INTERMEDIAS*/
+function comprobarSolsIntermedias(){
+
+    formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
+    pos = 0;
+    i = 0;
+    fila = 1;
+   
+        /*voy a mirar 3 a 3 las palabras para ver si van siendo correctas según la descripcion que se nos da*/
+
+    while(true){ 
+
+        palabra = "";
+
+        while(i < fila*4){
+            input = formulario.item(i); //cojo letra a letra la palabra CLAN
+            palabra = palabra + input.value; //tengo la palabra construida
+            i++;
+        }
+        pos = i;
+        resultado = siguienteCambiadaUnaLetra(palabra, formulario, pos, 4); //verifico que la siguiente a ésta es la misma con una letra cambiada, o por el contrario tiene mas o ninguna
+
+        if(resultado == false){ //si no es verdad, ya directamente esta mal el bloque, lo que mal empieza mal acaba
+
+            return false;
+        }
+
+        palabra = "";
+                
+        fila++; //avanzo una fila
+
+                if(fila == 6){ //acabé las palabras de 4 y voy a mirar las de 6
+                    break;
+                }
+
+        
+        while(i < fila*4){
+            input = formulario.item(i); //cojo letra a letra la palabra CIAN
+            palabra = palabra + input.value; //tengo la palabra construida
+            i++;
+        }
+        fila++; //avanzo una fila
+        palabra1 = "";
+
+
+        while(i < fila*4){
+            input = formulario.item(i); //cojo letra a letra la palabra NACÍ
+            palabra1 = palabra1 + input.value; //tengo la palabra construida
+            i++;
+        }
+
+
+        resultado = comprobarPista(palabra1.normalize("NFD").replace(/[\u0300-\u036f]/g, ""), palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));   //miro que la siguiente sea una reordenacion de la anterior (sin tener en cuenta acentos, i == í)
+
+        if(resultado == false){ //si no es verdad, ya directamente esta mal el bloque, lo que mal empieza mal acaba
+            return false;
+        }
+        
+        i = i-4; //se ha adelantado 4 y tengo que volver a coger la misma palabra como la primera de la siguiente vuelta
+
+    }
+
+    fila--; //la fila con la que salí es la 6, pero necesito que sea la 5 para que sea multiplo del i para la parada del while. tiene que ser 5 para que el 1er while sea 5*6=30 que es justo donde tiene que quedar i.
+    i = i+4; //situo la i para empezar puesta en la primera posicion de la primera palabra de 6
+
+    while(true){ 
+
+        palabra = "";
+
+        while(i < fila*6){
+            input = formulario.item(i); //cojo letra a letra la palabra REMATO
+            palabra = palabra + input.value; //tengo la palabra construida
+            i++;
+        }
+
+        pos = i;
+        resultado = siguienteCambiadaUnaLetra(palabra, formulario, pos, 6); //verifico que la siguiente a ésta es la misma con una letra cambiada, o por el contrario tiene mas o ninguna
+
+        if(resultado == false){ //si no es verdad, ya directamente esta mal el bloque, lo que mal empieza mal acaba
+            return false;
+        }
+
+        palabra = "";
+                
+        fila++; //avanzo una fila
+                if(fila == 10){ //acabé las palabras de 6 y CON ELLAS EL PASATIEMPO
+                    break;
+                }
+        
+        while(i < fila*6){
+            input = formulario.item(i); //cojo letra a letra la palabra REMOTO
+            palabra = palabra + input.value; //tengo la palabra construida
+            i++;
+        }
+
+
+        fila++; //avanzo una fila
+        palabra1 = "";
+
+        while(i < fila*6){
+            input = formulario.item(i); //cojo letra a letra la palabra MOTERO
+            palabra1 = palabra1 + input.value; //tengo la palabra construida
+            i++;
+        }
+
+
+        resultado = comprobarPista(palabra1.normalize("NFD").replace(/[\u0300-\u036f]/g, ""), palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+
+        if(resultado == false){ //si no es verdad, ya directamente esta mal el bloque, lo que mal empieza mal acaba
+            return false;
+        }
+        
+        i = i-6; //se ha adelantado 4 y tengo que volver a coger la misma palabra como la primera de la siguiente vuelta
+
+        
+    }
+
+    return true;
+}
+
+function siguienteCambiadaUnaLetra(palabra, formulario, pos, longPalabra){
+
+    sigPalabra = "";
+    posDistinta = false;
+    l = 0;
+
+    for(k = pos; k <pos+longPalabra; k++){
+        input = formulario.item(k); //cojo letra a letra la palabra CIAN
+        
+        //verifico que solo hay una letra de diferencia entre ambas
+
+        if(input.value != palabra[l]){
+            if(posDistinta == true){
+                return false;
+            }            
+            posDistinta = true;
+        }
+
+        l++;
+    
+    
+    }
+
+    return true;
+
+}
+
 
 var pasatiempoLocal = "";
 var permitirAlmLocal = false;

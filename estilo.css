@@ -1,4 +1,6 @@
 
+    /**TABLERO DEL PASATIEMPO**/
+
 table{
    table-layout: fixed;
    border-collapse: collapse;
@@ -29,15 +31,40 @@ td{
     padding: 10px;
 
 }
+
+
+
+
+
+
+
+
+
+    /**CUERPO DE LA PÁGINA WEB**/
+
+
+
 body{
     border-top: 3px solid #1b7f9b;
     /*padding: 20px;*/
-    width: 540px;
+    width: 550px; /*Para que case con el modelo dado a seguir*/
     /*width:30%;*/
-    margin:0 auto;
- 
+    margin:0 auto; /*para que el juego quede centrado*/
     
 }
+
+
+
+
+
+
+
+
+
+
+    /**ENCABEZADOS, DESCRIPCION Y DEFINICIONES DE LAS PISTAS**/
+
+
 
 #MenosCursivo{
     font-weight: bolder;
@@ -55,6 +82,26 @@ h2{
     font-family: 'Lucida Sans', sans-serif;
     font-size: 15px;
 }
+
+#descripcion{
+    font-size: 15.5px;
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+
+
+
+
+
+
+
+
+
+    /**AYUDA A LA RESOLUCION DEL PASATIEMPO - BÚSQUEDA DE PALABRAS**/
+
+
 
 #inputPistas {
     width: 20%;
@@ -76,6 +123,24 @@ h2{
     font-size: 20px;
     color: #1b7f9b;   
 }
+
+
+.Boton1{
+    font-size: 15px;
+    padding: 8px; /*alto boton*/
+    width: 30%;
+    background-color: #1b7f9b; 
+    border: none; /*sin borde*/
+    color: white; /*color del texto*/
+    text-align: center; /*alineado en el centro del boton*/
+    border-radius: 8px; /*borde redondeado*/
+}
+
+
+
+
+
+    /**LISTA GENERADA CON PISTAS VIA JAVASCRIPT**/
 
 
 
@@ -107,14 +172,18 @@ ul {
     padding: 0;
 }
 
-#descripcion{
-    font-size: 16px;
-    text-align: justify;
-    font-family: Arial, Helvetica, sans-serif;
 
-}
 
-/*ALERTA ALMACENAMIENTO LOCAL*/
+
+
+
+
+
+
+
+
+    /**ALERTA ALMACENAMIENTO LOCAL**/
+
 
 #somosLasCookies {
     padding: 20px;
@@ -151,13 +220,3 @@ ul {
     border-radius: 8px; /*borde redondeado*/
 }
 
-.Boton1{
-    font-size: 15px;
-    padding: 8px; /*alto boton*/
-    width: 25%;
-    background-color: #1b7f9b; 
-    border: none; /*sin borde*/
-    color: white; /*color del texto*/
-    text-align: center; /*alineado en el centro del boton*/
-    border-radius: 8px; /*borde redondeado*/
-}
